@@ -1,0 +1,37 @@
+choice
+    prompt "select app demo"
+    default APP_CONFIG_HELLOWORLD
+
+config APP_CONFIG_HELLOWORLD
+    bool "helloworld"
+    help
+        The helloworld demo
+
+config APP_CONFIG_MEDIA_DEMO
+    bool "media demo"
+    select FH_USING_VMM
+    help
+        The media demo
+
+config APP_CONFIG_BSP_DEMO
+    bool "bsp demo"
+    help
+        The bsp demo
+
+config APP_CONFIG_AUDIO_DEMO
+    bool "audio demo"
+    help
+        audio demo
+
+config APP_CONFIG_SENSOR_MONITOR
+    bool "sensor monitor"
+    help
+        Demonstrates a lightweight sensor-monitoring thread with periodic sampling
+        and an MSH command that reports the most recent value.
+
+config APP_CONFIG_RPC_VIDEO
+    bool "rpc video demo"
+    help
+        rpc video demo
+endchoice
+
