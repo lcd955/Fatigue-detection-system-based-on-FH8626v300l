@@ -1,9 +1,8 @@
 fatigue_detection_demo
 ======================
 
-目的：在 FH8626V300 平台上使用板载 NNA 做驾驶/作业场景的疲劳检测示例（骨架）。
-
-思路（推荐）：
+目的：在 FH8626V300 平台上使用板载 NNA 做驾驶/作业场景的疲劳检测示例
+思路：
 - 使用人脸检测模型 `face_det.nbg` 找到人脸框。
 - 对每个检测到的人脸，使用面部 68 点关键点模型 `face_68_kpt.nbg`（`NN_TYPE = FACE_68_KPT_DET`）得到面部关键点。
 - 基于 68 点关键点计算 EAR（Eye Aspect Ratio）和 MAR（Mouth Aspect Ratio），结合时间序列判断疲劳（长期低 EAR 或张嘴频繁视为疲劳/打哈欠）。
@@ -13,7 +12,7 @@ fatigue_detection_demo
 - `resource/`：放置模型文件和测试图像（请把 `.nbg` 模型放到 ROMFS 或 rootfs 中）。
 - `src/application.c`：示例程序骨架，包含模型加载、推理流程和疲劳判定逻辑（需根据你实际模型输出做少量适配）。
 
-使用步骤（示例）：
+使用步骤：
 1. 把 `resource/` 下的模型复制到你的固件 rootfs 输入目录（见 `Makefile` 的 `copy_resources`）。
 2. 在 RT-Thread 顶层运行 `make` 构建固件。
 3. 烧写固件并在串口终端观察输出。
@@ -25,7 +24,7 @@ fatigue_detection_demo
 WSL2 (Ubuntu 22.04) 下完整构建、打包与测试步骤
 --------------------------------------------------
 
-以下步骤假设你在 WSL2 的 Ubuntu 22.04 中操作，并且源码树位于 WSL 可访问路径（例如 `~/workspace/FH8626V300_RT_V1.0.0_20250627/rt-thread`）。
+以下步骤在 WSL2 的 Ubuntu 22.04 中操作，并且源码树位于 WSL 可访问路径（例如 `~/workspace/FH8626V300_RT_V1.0.0_20250627/rt-thread`）。
 
 1) 准备交叉编译工具链（若已有可跳过）
 
@@ -78,12 +77,11 @@ make -j4
 - 如果 `make` 报找不到交叉编译器：安装或指定正确的 `CROSS_COMPILE` 前缀并确认工具链在 PATH 中。
 - 如果看不到 `test.argb`：确认 `copy_resources` 步骤已成功把文件复制进 `build/rootfs` 或 `build/root`，并最终打包到镜像中。
 
-已完成项（生成合成图与 finsh 调参支持）
 ------------------------------------
 
 1) 合成 ARGB raw 生成脚本
 
-- 我在 `resource/` 下加入 `gen_synthetic_argb.py`，在 WSL (Ubuntu 22.04) 中你可以运行：
+- 在 `resource/` 下加入 `gen_synthetic_argb.py`，在 WSL (Ubuntu 22.04) 中你可以运行：
 
 ```bash
 python3 rt-thread/app/fatigue_detection_demo/resource/gen_synthetic_argb.py --out rt-thread/app/fatigue_detection_demo/resource/test.argb --w 640 --h 480
@@ -93,7 +91,7 @@ python3 rt-thread/app/fatigue_detection_demo/resource/gen_synthetic_argb.py --ou
 
 2) finsh 命令（板上调参）
 
-- 我已在程序中加入以下 finsh 命令：
+- 已在程序中加入以下 finsh 命令：
 	- `run_fatigue_demo`：运行一次检测并打印结果（读取 `/rom/models/test.argb`）。
 	- `set_eye_thresh <mean> <std>`：设置亮度均值阈值与方差阈值（整数）。
 	- `show_eye_thresh`：打印当前阈值与眼区裁剪比例。
@@ -115,5 +113,6 @@ run_fatigue_demo
 ```
 
 说明：finsh 命令依赖 RT-Thread 的 shell/finsh 支持（默认仓库已启用）。你可以在串口终端直接执行上述命令进行实时调参。
+
 
 
